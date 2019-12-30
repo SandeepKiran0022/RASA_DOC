@@ -388,3 +388,15 @@ Configuration:
   # if not set the default timeout of duckling http url is set to 3 seconds.
   timeout : 3  
 ```
+
+## Evaluvation of best component for Entity extraction in RASA 
+
+- If we have custom trained entities , then Conditional Random Field ( CRF) Entity extraction is the best.
+- If we dont have custom trained entities, then Duckling Http Extractr is the best.
+
+- Thus, CRF Entity extraction is the best component for entity extraction in RASA as for banking chatbots we dont required pre trained entities.
+
+![alt_text](https://github.com/SandeepKiran0022/RASA_DOC/blob/master/pic5.png)
+
+
+## State of the ART Models for Entity Extraction
