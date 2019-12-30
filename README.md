@@ -45,11 +45,13 @@ Run the code cell below to see the NLU training data:
 
 ``` cat data/nlu.md ```
 
+
 3. Define Your Model Configuration
 
 The configuration file defines the NLU and Core components that your model will use. 
 
 ``` cat config.yml ```
+
 
 4. Write Your First Stories
 
@@ -61,18 +63,21 @@ Run the command below to view the example stories inside the file data/stories.m
 
 ``` cat data/stories.md ```
 
+
 5. Define a Domain
 
 The next thing we need to do is define a Domain. The domain defines the universe your assistant lives in: what user inputs it should expect to get, what actions it should be able to predict, how to respond, and what information to store. The domain for our assistant is saved in a file called domain.yml:
 
 ``` cat domain.yml ```
 
+
 6. Train a Model
 
 Anytime we add new NLU or Core data, or update the domain or configuration, we need to re-train a neural network on our example stories and NLU data. To do this, run the command below. This command will call the Rasa Core and NLU train functions and store the trained model into the models/ directory. The command will automatically only retrain the different model parts if something has changed in their data or configuration.
 
 ``` rasa train ```
-
+ 
+ 
 7. Talk to Your Assistant
 
-``` rasa shell    
+``` rasa shell   ```
