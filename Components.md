@@ -400,3 +400,10 @@ Configuration:
 
 
 ## State of the ART Models for Entity Extraction
+
+- ```Google BERT NER```: BERT (Bidirectional Encoder Representations from Transformers) is pre-training language representations, trained with large text corpus and use that model for NLP tasks like(NLU, NER). BERT pre-trained representations are contextual representations with deeply bidirectional. This uses both its left and right context. These representations are fine-tuned for respective custom NLP tasks. 
+
+
+### Advantages of Google BERT over CRF NER algorithm
+
+- The data augmentation on entity label values can be eliminated as BERT use the word embeddings. Which helps in the training data size as augmentation size is reduced comparatively from CRF NER.
