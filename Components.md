@@ -412,8 +412,6 @@ Configuration:
 
 ## Entity Synonym Mapper
 
-## EntitySynonymMapper
-
 - Maps synonymous entity values to the same value.
 
 - Modifies existing entities that previous entity extraction components found
