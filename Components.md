@@ -230,3 +230,161 @@ This is due to the fact that BERT considers “hello world!” as four tokens: [
 - CRFEntityExtractor
 - DucklingHTTPExtractor
 
+
+### MitieEntityExtractor
+
+- MITIE entity extraction (using a MITIE NER trainer)
+
+- appends entities
+
+- Requires:MitieNLP
+
+- Output_Example:
+```
+{
+    "entities": [{"value": "New York City",
+                  "start": 20,
+                  "end": 33,
+                  "confidence": null,
+                  "entity": "city",
+                  "extractor": "MitieEntityExtractor"}]
+}
+```
+- This uses the MITIE entity extraction to find entities in a message. The underlying classifier is using a multi class linear SVM with a sparse linear kernel and custom features. The MITIE component does not provide entity confidence values.
+
+- Configuration:	
+```
+pipeline:
+- name: "MitieEntityExtractor"
+```
+
+### SpacyEntityExtractor
+
+- appends entities
+
+- Requires: SpacyNLP
+
+- Output_Example:	
+```
+{
+    "entities": [{"value": "New York City",
+                  "start": 20,
+                  "end": 33,
+                  "entity": "city",
+                  "confidence": null,
+                  "extractor": "SpacyEntityExtractor"}]
+}
+```
+
+-Using spaCy this component predicts the entities of a message. spacy uses a statistical BILOU transition model. As of now, this component can only use the spacy builtin entity extraction models and can not be retrained. This extractor does not provide any confidence scores.
+
+-Configuration:	
+
+Configure which dimensions, i.e. entity types, the spacy component should extract. A full list of available dimensions can be found in the spaCy documentation. Leaving the dimensions option unspecified will extract all available dimensions.
+
+- pipeline:
+```
+- name: "SpacyEntityExtractor"
+  # dimensions to extract
+  dimensions: ["PERSON", "LOC", "ORG", "PRODUCT"]
+  ```
+  
+### CRFEntityExtractor
+
+-conditional random field entity extraction
+
+-Requires A tokenizer
+
+-Output-Example:	
+```
+{
+    "entities": [{"value":"New York City",
+                  "start": 20,
+                  "end": 33,
+                  "entity": "city",
+                  "confidence": 0.874,
+                  "extractor": "CRFEntityExtractor"}]
+}
+```
+
+-Description:	
+
+This component implements conditional random fields to do named entity recognition. CRFs can be thought of as an undirected Markov chain where the time steps are words and the states are entity classes. Features of the words (capitalisation, POS tagging, etc.) give probabilities to certain entity classes, as are transitions between neighbouring entity tags: the most likely set of tags is then calculated and returned. If POS features are used (pos or pos2), spaCy has to be installed. If you want to use additional features, such as pre-trained word embeddings, from any provided dense featurizer, use "text_dense_features". Make sure to set "return_sequence" to True in the corresponding featurizer.
+
+Configuration:	
+
+- pipeline:
+```
+- name: "CRFEntityExtractor"
+  # The features are a ``[before, word, after]`` array with
+  # before, word, after holding keys about which
+  # features to use for each word, for example, ``"title"``
+  # in array before will have the feature
+  # "is the preceding word in title case?".
+  # Available features are:
+  # ``low``, ``title``, ``suffix5``, ``suffix3``, ``suffix2``,
+  # ``suffix1``, ``pos``, ``pos2``, ``prefix5``, ``prefix2``,
+  # ``bias``, ``upper``, ``digit``, ``pattern``, and ``text_dense_features``
+  features: [["low", "title"], ["bias", "suffix3"], ["upper", "pos", "pos2"]]
+
+  # The flag determines whether to use BILOU tagging or not. BILOU
+  # tagging is more rigorous however
+  # requires more examples per entity. Rule of thumb: use only
+  # if more than 100 examples per entity.
+  BILOU_flag: true
+
+  # This is the value given to sklearn_crfcuite.CRF tagger before training.
+  max_iterations: 50
+
+  # This is the value given to sklearn_crfcuite.CRF tagger before training.
+  # Specifies the L1 regularization coefficient.
+  L1_c: 0.1
+
+  # This is the value given to sklearn_crfcuite.CRF tagger before training.
+  # Specifies the L2 regularization coefficient.
+  L2_c: 0.1
+  
+```
+
+### DucklingHTTPExtractor
+
+-Duckling lets you extract common entities like dates, amounts of money, distances, and others in a number of languages.
+
+-Output-Example:	
+
+```
+{
+    "entities": [{"end": 53,
+                  "entity": "time",
+                  "start": 48,
+                  "value": "2017-04-10T00:00:00.000+02:00",
+                  "confidence": 1.0,
+                  "extractor": "DucklingHTTPExtractor"}]
+}
+```
+
+-To use this component you need to run a duckling server. The easiest option is to spin up a docker container using docker run -p 8000:8000 rasa/duckling.
+
+- Alternatively, you can install duckling directly on your machine and start the server.
+
+-Duckling allows to recognize dates, numbers, distances and other structured entities and normalizes them. Please be aware that duckling tries to extract as many entity types as possible without providing a ranking. For example, if you specify both number and time as dimensions for the duckling component, the component will extract two entities: 10 as a number and in 10 minutes as a time from the text I will be there in 10 minutes. In such a situation, your application would have to decide which entity type is be the correct one. The extractor will always return 1.0 as a confidence, as it is a rule based system.
+
+-Configure which dimensions, i.e. entity types, the duckling component should extract. A full list of available dimensions can be found in the duckling documentation. Leaving the dimensions option unspecified will extract all available dimensions.
+
+- pipeline:
+```
+- name: "DucklingHTTPExtractor"
+  # url of the running duckling server
+  url: "http://localhost:8000"
+  # dimensions to extract
+  dimensions: ["time", "number", "amount-of-money", "distance"]
+  # allows you to configure the locale, by default the language is
+  # used
+  locale: "de_DE"
+  # if not set the default timezone of Duckling is going to be used
+  # needed to calculate dates from relative expressions like "tomorrow"
+  timezone: "Europe/Berlin"
+  # Timeout for receiving response from http url of the running duckling server
+  # if not set the default timeout of duckling http url is set to 3 seconds.
+  timeout : 3  
+```
