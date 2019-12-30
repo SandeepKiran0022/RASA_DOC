@@ -47,7 +47,7 @@ However, Google’s BERT does serve a good baseline to work with and if you don'
 
 - When training language models, there is a challenge of defining a prediction goal. Many models predict the next word in a sequence (e.g. “The child came home from ___”), a directional approach which inherently limits context learning. To overcome this challenge, BERT uses two training strategies:
 
-- Masked LM (MLM)
+## - Masked LM (MLM)
 
 Before feeding word sequences into BERT, 15% of the words in each sequence are replaced with a [MASK] token. The model then attempts to predict the original value of the masked words, based on the context provided by the other, non-masked, words in the sequence. In technical terms, the prediction of the output words requires:
 Adding a classification layer on top of the encoder output.
@@ -61,7 +61,7 @@ Calculating the probability of each word in the vocabulary with softmax.
 
 The BERT loss function takes into consideration only the prediction of the masked values and ignores the prediction of the non-masked words. As a consequence, the model converges slower than directional models, a characteristic which is offset by its increased context awareness.
 
-- Next Sentence Prediction (NSP)
+## - Next Sentence Prediction (NSP)
 
 
 In the BERT training process, the model receives pairs of sentences as input and learns to predict if the second sentence in the pair is the subsequent sentence in the original document. During training, 50% of the inputs are a pair in which the second sentence is the subsequent sentence in the original document, while in the other 50% a random sentence from the corpus is chosen as the second sentence. The assumption is that the random sentence will be disconnected from the first sentence.
