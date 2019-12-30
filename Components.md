@@ -97,6 +97,10 @@ When training the BERT model, Masked LM and Next Sentence Prediction are trained
 - BERT’s bidirectional approach (MLM) converges slower than left-to-right approaches (because only 15% of words are predicted in each batch) but bidirectional training still outperforms left-to-right training after a small number of pre-training steps.
 
 
+## Tokenization
+
+- Tokenization is the process of tokenizing or splitting a string, text into a list of tokens. One can think of token as parts like a word is a token in a sentence, and a sentence is a token in a paragraph.
+
 ### Different Tokenization components provided by RASA Framework
 
 - Jieba Tokenizer
@@ -214,3 +218,15 @@ This is due to the fact that BERT considers “hello world!” as four tokens: [
 
 
 ## Entity Extraction
+
+- Entity extraction, also known as entity name extraction or named entity recognition, is an information extraction technique that refers to the process of identifying and classifying key elements from text into pre-defined categories. In this way, it helps transform unstructured data to data that is structured, and therefore machine readable and available for standard processing that can be applied for retrieving information, extracting facts and question answering. 
+
+
+## Different Entity extraction component provided by RASA 
+
+- MitieEntityExtractor
+- SpacyEntityExtractor
+- EntitySynonymMapper
+- CRFEntityExtractor
+- DucklingHTTPExtractor
+
