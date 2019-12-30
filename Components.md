@@ -192,7 +192,25 @@ Description:	Creates tokens using the spacy tokenizer. Can be used to define tok
 
 ### - State of the ART Model for tokenization
 
+- We can see that BERT provides tokenization , but generally ``` White space tokenizer ``` is efficient than BERT's tokenization as a service.
+
+- BERT Tokenization as a service ( sample code)
+
+Often you want to use your own tokenizer to segment sentences instead of the default one from BERT. Simply call encode(is_tokenized=True) on the client slide as follows:
+
+```
+texts = ['hello world!', 'good day']
+
+# a naive whitespace tokenizer
+texts2 = [s.split() for s in texts]
+
+vecs = bc.encode(texts2, is_tokenized=True)
+
+``` 
+
+This gives [2, 25, 768] tensor where the first [1, 25, 768] corresponds to the token-level encoding of “hello world!”. If you look into its values, you will find that only the first four elements, i.e. [1, 0:3, 768] have values, all the others are zeros. 
+
+This is due to the fact that BERT considers “hello world!” as four tokens: [CLS] hello world! [SEP], the rest are padding symbols and are masked out before output.
 
 
-
-
+## Entity Extraction
