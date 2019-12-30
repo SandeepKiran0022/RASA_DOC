@@ -167,7 +167,7 @@ Description:	Creates tokens using the spacy tokenizer. Can be used to define tok
 
 ## - Evaluvation of Best Tokenizer available in RASA
 
-- We can see that Whitespace tokenizer is the best and efficient option for tokenization in RASA ,if the language is English or any other language which uses space as a separator between words.
+- We can see that ``` Whitespace tokenizer``` is the best and efficient option for tokenization in RASA ,if the language is English or any other language which uses space as a separator between words.
 
 - If the language is Chinese , then using Jieba Tokenizer is the best option
 
