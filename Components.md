@@ -8,6 +8,33 @@
 - name: "EmbeddingIntentClassifier"
 
 
+## State of the ART Models
+
+There are currently many state of the art models for NLP, but these have proven to be efficient.
+
+- BERT
+- RoBERTa
+- DistilBERT
+- XLNET
+
+
+![alt text](https://github.com/SandeepKiran0022/RASA_DOC/blob/master/performance.png)
+
+![alt_test](https://github.com/SandeepKiran0022/RASA_DOC/blob/master/perf2.png)
+
+
+## So which one to use?
+ 
+If you really need a faster inference speed but can compromise few-% on prediction metrics, DistilBERT is a starting reasonable choice, however, if you are looking for the best prediction metrics, you’ll be better off with Facebook’s RoBERTa.
+
+Theoratically, XLNet’s permutation based training should handle dependencies well, and might work better in longer-run.
+
+However, Google’s BERT does serve a good baseline to work with and if you don't have any of the above critical needs, you can keep your systems running with BERT.
+
+ 
+
+
+
 ### Different Tokenization components provided by RASA Framework
 
 - Jieba Tokenizer
