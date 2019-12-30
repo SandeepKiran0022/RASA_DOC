@@ -407,3 +407,42 @@ Configuration:
 ### Advantages of Google BERT over CRF NER algorithm
 
 - The data augmentation on entity label values can be eliminated as BERT use the word embeddings. Which helps in the training data size as augmentation size is reduced comparatively from CRF NER.
+
+
+
+## Entity Synonym Mapper
+
+## EntitySynonymMapper
+
+- Maps synonymous entity values to the same value.
+
+-Modifies existing entities that previous entity extraction components found
+
+- If the training data contains defined synonyms (by using the value attribute on the entity examples). this component will make sure that detected entity values will be mapped to the same value. For example, if your training data contains the following examples:
+
+```
+[{
+  "text": "I moved to New York City",
+  "intent": "inform_relocation",
+  "entities": [{"value": "nyc",
+                "start": 11,
+                "end": 24,
+                "entity": "city",
+               }]
+},
+{
+  "text": "I got a new flat in NYC.",
+  "intent": "inform_relocation",
+  "entities": [{"value": "nyc",
+                "start": 20,
+                "end": 23,
+                "entity": "city",
+               }]
+}]
+
+```
+
+- This component will allow you to map the entities New York City and NYC to nyc. The entitiy extraction will return nyc even though the message contains NYC. When this component changes an exisiting entity, it appends itself to the processor list of this entity.
+
+
+## There is no need for a State of a Art model required for entity synonym mapper.
