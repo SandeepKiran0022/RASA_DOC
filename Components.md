@@ -416,7 +416,7 @@ Configuration:
 
 - Maps synonymous entity values to the same value.
 
--Modifies existing entities that previous entity extraction components found
+- Modifies existing entities that previous entity extraction components found
 
 - If the training data contains defined synonyms (by using the value attribute on the entity examples). this component will make sure that detected entity values will be mapped to the same value. For example, if your training data contains the following examples:
 
