@@ -584,3 +584,30 @@ pipeline:
 
 ## State of the ART Model for Text Featurization
 
+
+- Bag-of-word(BoW) models for vectorizing documents don’t take care of the semantics of the document. There are several other techniques which take care of these shortcomings:
+
+- The main difference between the word embeddings of Word2vec, Glove, ELMo and BERT is that
+
+- Word2vec and Glove word embeddings are context independent- these models output just one vector (embedding) for each word, combining all the different senses of the word into one vector.
+
+- That is the one numeric representation of a word (which we call embedding/vector) regardless of where the words occurs in a sentence and regardless of the different meanings they may have. For instance, after we train word2vec/Glove on a corpus (unsupervised training - no labels needed) we get as output one vector representation for, say the word “cell”. So even if we had a sentence like “He went to the prison cell with his cell phone to extract blood cell samples from inmates”, where the word cell has different meanings based on the sentence context, these models just collapse them all into one vector for “cell” in their output.
+
+- ELMo and BERT can generate different word embeddings for a word that captures the context of a word - that is its position in a sentence.
+
+- For instance, for the same example above “He went to the prison cell with his cell phone to extract blood cell samples from inmates”, both Elmo and BERT would generate different vectors for the three vectors for cell. The first cell (prison cell case) , for instance would be closer to words like incarceration, crime etc. whereas the second “cell” (phone case) would be closer to words like iphone, android, galaxy etc..
+
+- The main difference above is a consequence of the fact Word2vec and Glove do not take into account word order in their training - ELMo and BERT take into account word order (ELMo uses LSTMS; BERT uses Transformer - an attention based model with positional encodings to represent word positions).
+
+- A practical implication of this difference is that we can use word2vec and Glove vectors trained on a large corpus directly for downstream tasks. All we need is the vectors for the words. There is no need for the model itself that was used to train these vectors.
+
+- However, in the case of ELMo and BERT, since they are context dependent, we need the model that was used to train the vectors even after training, since the models generate the vectors for a word based on context. We can just use the context independent vectors for a word if we choose too (just feed in a word standalone to the model and get its vector) , but would defeat the very purpose/advantage of these models. Figure below captures this latest trend of using word embeddings along with the models they were trained on for downstream tasks
+
+
+![alt_text](https://qphs.fs.quoracdn.net/main-qimg-b46d83b2eee2d5875f469b22a494db6e)
+
+![alt_text](https://qphs.fs.quoracdn.net/main-qimg-fa496d9bfaa72f614d4cbae0c75f89cc)
+
+- ``` Thus, BERT word embeddings could be used as it is better than ELMo and can also lead to better intent classification ```
+
+## Intent Classification
