@@ -444,3 +444,143 @@ Configuration:
 
 
 ## State of a Art model is not required for  entity synonym mapper.
+
+## Text Featurizers
+
+Text featurizers are divided into two different categories: sparse featurizers and dense featurizers. Sparse featurizers are featurizers that return feature vectors with a lot of missing values, e.g. zeros. As those feature vectors would normally take up a lot of memory, we store them as sparse features. Sparse features only store the values that are non zero and their positions in the vector. Thus, we save a lot of memroy and are able to train on larger datasets.
+
+
+## Text Featurizers provided by RASA
+
+- MitieFeaturizer
+- SpacyFeaturizer
+- ConveRTFeaturizer
+- RegexFeaturizer
+- CountVectorsFeaturizer
+
+### MitieFeaturizer
+
+- used as an input to intent classifiers that need intent features (e.g. SklearnIntentClassifier)
+
+- requires MitieNLP
+
+- Dense featurizer
+
+- Creates feature for intent classification using the MITIE featurizer.
+
+- Configuration:	
+```
+pipeline:
+- name: "MitieFeaturizer"
+```
+
+### SpacyFeaturizer
+
+- used as an input to intent classifiers that need intent features (e.g. SklearnIntentClassifier)
+
+- requires SpacyNLP
+
+- Dense featurizer
+
+- Creates feature for intent classification using the spacy featurizer.
+
+- Configuration:	
+```
+pipeline:
+- name: "SpacyFeaturizer"
+```
+
+### ConveRTFeaturizer
+
+- Creates a vector representation of user message and response (if specified) using ConveRT model.
+
+- Used as an input to intent classifiers and response selectors that need intent features and response features respectively (e.g. EmbeddingIntentClassifier and ResponseSelector)
+
+- Dense featurizer
+
+- Creates features for intent classification and response selection. Uses the default signature to compute vector representations of input text.
+
+- Configuration:
+
+```
+pipeline:
+- name: "ConveRTFeaturizer"
+```
+
+
+### RegexFeaturizer
+
+- regex feature creation to support intent and entity classification
+
+- Sparse featurizer
+
+- Creates features for entity extraction and intent classification. During training, the regex intent featurizer creates a list of regular expressions defined in the training data format. For each regex, a feature will be set marking whether this expression was found in the input, which will later be fed into intent classifier / entity extractor to simplify classification (assuming the classifier has learned during the training phase, that this set feature indicates a certain intent). Regex features for entity extraction are currently only supported by the CRFEntityExtractor component!
+
+
+### CountVectorsFeaturizer
+
+- Creates bag-of-words representation of user message and label (intent and response) features
+
+- Used as an input to intent classifiers that need bag-of-words representation of intent features (e.g. EmbeddingIntentClassifier)
+
+- Sparse featurizer
+
+- Creates features for intent classification and response selection. Creates bag-of-words representation of user message and label features using sklearn’s CountVectorizer. All tokens which consist only of digits (e.g. 123 and 99 but not a123d) will be assigned to the same feature.
+
+- Configuration:
+```
+pipeline:
+- name: "CountVectorsFeaturizer"
+
+  # whether to use a shared vocab
+  "use_shared_vocab": False,
+  
+  # whether to use word or character n-grams
+  # 'char_wb' creates character n-grams only inside word boundaries
+  # n-grams at the edges of words are padded with space.
+  
+  analyzer: 'word'  # use 'char' or 'char_wb' for character
+  
+  # the parameters are taken from
+  # sklearn's CountVectorizer
+  # regular expression for tokens
+  
+  token_pattern: r'(?u)\b\w\w+\b'
+  
+  # remove accents during the preprocessing step
+  strip_accents: None  # {'ascii', 'unicode', None}
+  # list of stop words
+  stop_words: None  # string {'english'}, list, or None (default)
+  
+  # min document frequency of a word to add to vocabulary
+  # float - the parameter represents a proportion of documents
+  # integer - absolute counts
+  min_df: 1  # float in range [0.0, 1.0] or int
+  
+  # max document frequency of a word to add to vocabulary
+  # float - the parameter represents a proportion of documents
+  # integer - absolute counts
+  max_df: 1.0  # float in range [0.0, 1.0] or int
+  
+  # set ngram range
+  min_ngram: 1  # int
+  max_ngram: 1  # int
+  # limit vocabulary size
+  max_features: None  # int or None
+  
+  # if convert all characters to lowercase
+  lowercase: true  # bool
+  # handling Out-Of-Vacabulary (OOV) words
+  # will be converted to lowercase if lowercase is true
+  OOV_token: None  # string or None
+  OOV_words: []  # list of strings
+```
+
+## Evaluvation of Best Text Featurizer component provided by RASA
+
+-Since ConveRT model is trained only on an english corpus of conversations, this featurizer should only be used if your training data is in english language.
+
+- The best Text Featurizer component in RASA , would be ``` Count Vectors Featurizer``` , because of its sparse featurization technique.
+
+## State of the ART Model for Text Featurization
+
