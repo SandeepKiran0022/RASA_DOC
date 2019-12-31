@@ -731,6 +731,11 @@ pipeline:
 
 ## Evaluation of the best Intent classifier provided by RASA
 
+- If we have few NLU training data , then going for KeyWord Intent Classifier is the best option.
+
+- Otherwise, ``` Embedding Intent Classifier ``` is the best classifier becuase , it adapts to your domain specific messages as there are e.g. no missing word embeddings. Also it is inherently language independent and you are not reliant on good word embeddings for a certain language. Another great feature of this classifier is that it supports messages with multiple intents as described above. In general this makes it a very flexible classifier for advanced use cases.
+
+![alt_text](https://blog.rasa.com/content/images/2019/02/image-1.png)
 
 ## State of the art models for Intent classification
 
