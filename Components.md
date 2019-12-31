@@ -611,3 +611,126 @@ pipeline:
 - ``` Thus, BERT word embeddings could be used as it is better than ELMo and can also lead to better intent classification ```
 
 ## Intent Classification
+
+- Intent classification is the automated association of text to a specific purpose or goal. In essence, a classifier analyzes pieces of text and categorizes them into intents such as Purchase, Downgrade, Unsubscribe, and Demo Request. 
+
+- This is useful to understand the intentions behind customer queries, emails, chat conversations, social media comments, and more, to automate processes, and get insights from customer interactions.
+
+### Intent Classifiers provided by RASA
+
+- MitieIntentClassifier
+- SklearnIntentClassifier
+- EmbeddingIntentClassifier
+- KeywordIntentClassifier
+
+### MitieIntentClassifier
+
+- Requires a tokenizer and a featurizer
+
+- Output_Example:	
+```
+{
+    "intent": {"name": "greet", "confidence": 0.98343}
+}
+```
+
+- This classifier uses MITIE to perform intent classification. The underlying classifier is using a multi-class linear SVM with a sparse linear kernel
+
+Configuration:	
+```
+pipeline:
+- name: "MitieIntentClassifier"
+```
+
+### SklearnIntentClassifier
+
+- Outputs aintent and intent_ranking
+
+- Output-Example:	
+```
+{
+    "intent": {"name": "greet", "confidence": 0.78343},
+    "intent_ranking": [
+        {
+            "confidence": 0.1485910906220309,
+            "name": "goodbye"
+        },
+        {
+            "confidence": 0.08161531595656784,
+            "name": "restaurant_search"
+        }
+    ]
+}
+```
+
+-The sklearn intent classifier trains a linear SVM which gets optimized using a grid search. In addition to other classifiers it also provides rankings of the labels that did not “win”. The spacy intent classifier needs to be preceded by a featurizer in the pipeline. This featurizer creates the features used for the classification.
+
+- During the training of the SVM a hyperparameter search is run to find the best parameter set. In the config, you can specify the parameters that will get tried
+
+pipeline:
+```
+- name: "SklearnIntentClassifier"
+  # Specifies the list of regularization values to
+  # cross-validate over for C-SVM.
+  # This is used with the ``kernel`` hyperparameter in GridSearchCV.
+  C: [1, 2, 5, 10, 20, 100]
+  # Specifies the kernel to use with C-SVM.
+  # This is used with the ``C`` hyperparameter in GridSearchCV.
+  kernels: ["linear"]
+```
+
+### EmbeddingIntentClassifier
+
+- Outputs a intent and intent_ranking
+
+- Requires a featurizer
+
+- Output-Example:	
+```
+{
+    "intent": {"name": "greet", "confidence": 0.8343},
+    "intent_ranking": [
+        {
+            "confidence": 0.385910906220309,
+            "name": "goodbye"
+        },
+        {
+            "confidence": 0.28161531595656784,
+            "name": "restaurant_search"
+        }
+    ]
+}
+```
+
+- The embedding intent classifier embeds user inputs and intent labels into the same space. Supervised embeddings are trained by maximizing similarity between them. This algorithm is based on StarSpace. However, in this implementation the loss function is slightly different and additional hidden layers are added together with dropout. This algorithm also provides similarity rankings of the labels that did not “win”.
+
+- The embedding intent classifier needs to be preceded by a featurizer in the pipeline. This featurizer creates the features used for the embeddings. It is recommended to use CountVectorsFeaturizer that can be optionally preceded by SpacyNLP and SpacyTokenizer.
+
+### KeywordIntentClassifier
+
+- Simple keyword matching intent classifier, intended for small, short-term projects.
+
+- Outputs a intent
+
+- Output-Example:	
+```
+{
+    "intent": {"name": "greet", "confidence": 1.0}
+}
+```
+
+- This classifier works by searching a message for keywords. The matching is case sensitive by default and searches only for exact matches of the keyword-string in the user message. The keywords for an intent are the examples of that intent in the NLU training data. This means the entire example is the keyword, not the individual words in the example.
+
+- Configuration:	
+```
+pipeline:
+- name: "KeywordIntentClassifier"
+  case_sensitive: True
+```
+
+
+## Evaluation of the best Intent classifier provided by RASA
+
+
+## State of the art models for Intent classification
+
