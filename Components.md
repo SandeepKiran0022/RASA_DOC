@@ -443,4 +443,4 @@ Configuration:
 - This component will allow you to map the entities New York City and NYC to nyc. The entitiy extraction will return nyc even though the message contains NYC. When this component changes an exisiting entity, it appends itself to the processor list of this entity.
 
 
-## There is no need for a State of a Art model required for entity synonym mapper.
+## State of a Art model is not required for  entity synonym mapper.
