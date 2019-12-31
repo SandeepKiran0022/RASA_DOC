@@ -1,5 +1,5 @@
 
-## Pipeline in RASA Framework
+## Sample Pipeline in RASA Framework
 
 - name: "WhitespaceTokenizer"
 - name: "CRFEntityExtractor"
