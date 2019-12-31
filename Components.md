@@ -737,5 +737,13 @@ pipeline:
 
 ![alt_text](https://blog.rasa.com/content/images/2019/02/image-1.png)
 
-## State of the art models for Intent classification
+## State of the art model for Intent classification
 
+```BERT```  pushed the state of the art in Natural Language Processing by combining two powerful technologies:
+
+- It is based on a deep Transformer network, a type of network that can process efficiently long texts by using attention.
+- It is bidirectional, meaning that it takes into account the whole text passage to understand the meaning of each word.
+
+### Comparsion between different chatbot platforms when tested on different corpus
+
+![alt_text](https://miro.medium.com/max/850/1*kdERCRUnrDNRX-4Q9Yhxuw.png)
